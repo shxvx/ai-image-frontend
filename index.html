@@ -81,7 +81,7 @@
       const result = document.getElementById("result");
       result.style.display = 'none';
 
-      const res = await fetch("http://localhost:3000/generate-image", {
+      const res = await fetch("https://ai-image-backend-f2mf.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt })
