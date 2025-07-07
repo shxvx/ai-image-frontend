@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Image Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #00c9ff;
+      background-image: linear-gradient(45deg, #00c9ff, #92fe9d);
+      color: #000;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    .image-container {
+      margin-top: 20px;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-top: 10px;
+      border: 2px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✨ AI Image Generator</h1>
+    <input id="prompt" placeholder="Describe your image..." />
+    <button onclick="generateImage()">Generate Image</button>
+    <div class="image-container">
+      <img id="result" style="display:none;" alt="Generated image" />
+    </div>
+  </div>
+
+  <script>
+    async function generateImage() {
+      const prompt = document.getElementById("prompt").value;
+      const result = document.getElementById("result");
+      result.style.display = 'none';
+
+      const res = await fetch("http://localhost:3000/generate-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        result.src = data.imageUrl;
+        result.style.display = "block";
+      } else {
+        alert("Image generation failed");
+      }
+    }
+  </script>
+</body>
+</html>
